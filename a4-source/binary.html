@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pbinary</title>
+</head>
+<body>
+
+<h1>Challenge Time!</h1>
+<h2> Converting binary to decimal:</h2>
+
+<form action = "/cgi-bin/mathh.py" method="POST">
+110011= 
+<input type="text" name="answer">
+<br>
+choose #bits(number range) to try next:
+<p>
+<br>
+<input type = "radio" name  = "bit"  value = "16"> 4-bits[0..15]
+<br>
+<input type = "radio" name  = "bit"  value = "64"> 6-bits[0..63]
+<br>
+
+<input type = "radio" name  = "bit"  value = "256"> 8-bits[0..255]
+<br>
+<input type="submit" value="submit new entry">
+<input type = "hidden" name = "hidden" value = "110011">
+</form>
+</body>
+</html>

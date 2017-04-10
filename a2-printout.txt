@@ -1,0 +1,345 @@
+Wei Tang
+CSE 337
+
+Assignment 2: ENVIRONMENT ALLV25
+
+1.
+(a) the version of Perl that your are running. What version is it?
+A: perl -v
+  This is perl 5, version 20, subversion 2 (v5.20.2) built for x86_64-linux-gnu-thread-multi
+
+(b) the documentation of all command switches of the Perl interpreter “perl”
+A: perldoc perl
+(c) the documentation of all Perl built-in functions
+A: perldoc -f
+
+(d) the description of the function map in the Perl manual
+A: perldoc -f map
+
+(e) the description of the predefined variable $! in the Perl manual
+A: perldoc -v '$!'
+
+2.
+(a):What does the following command do when issued at the OS command line?
+A: it generate random 8-character long passwords that are randomly choosen from a-z
+How it do it:
+it maps 1 to 8 with an alphabetic letter random choose from list ('a'..'z') and returns an array of 8 letter
+
+perl -le "@array1 = map{('?','!','-',';','#')[rand 5]}0..1;@array2 = map{('a'..'z','A'..'Z')[rand 52]}0..3;@array3 = map{(0..9)[rand 10]} 0..1;print (@array1,@array2,@array3);"
+
+(b) What does the following Perl statement in a Perl script do?
+A: it take all numbers that are multiple of 3 from the string
+HOW:
+it split the "1 3 4 5 7 8 9" by blank space and pass each element into grep to see if
+it is a multiple of 3, and then take all the qualified elements and join them with " # " in to a string
+
+print join "", grep{ord($_)<=57 && ord($_)>=46} split //, "CSE337";
+see code : q2part_c.pl
+
+
+(c):
+
+use strict;
+use warnings;
+use List::Util "reduce";
+my $foo = reduce {$b % 2 == 0 ? $a + $b/2 :$a + $b} 1..100;
+print "$foo";
+
+
+3.
+
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+#unless
+unless($ARGV[0]){
+  print "Please enter number of quizs with command line, System exit\n";
+  exit 0;
+};
+
+my $number_quiz = $ARGV[0];
+my $first_operand;
+my $second_operand;
+my $answer;
+my $user_answer;
+my $score = 0;
+my $count = 0;
+my $percentage = 0;
+# do...untill loop
+do{
+  $first_operand = int(rand 20)+1;
+  $second_operand = int(rand 30)+1;
+  my $operand = ("+","-")[int(rand 2)];
+  # modifer
+  $answer = $first_operand+$second_operand
+    if($operand eq "+");
+  $answer = $first_operand-$second_operand
+    if($operand eq "-");
+  print "$first_operand$operand$second_operand =";
+  $user_answer  = <STDIN>;
+  if($user_answer == $answer){
+      print "Excellent\n";
+      $score++;
+  }
+  $count ++;
+} until($count == $number_quiz);
+$percentage = $score/$number_quiz unless $score == 0;
+print "Your score is $score out of $number_quiz. That's ",$percentage*100,"% correct. Congrats\n";
+
+4.
+use strict;
+use warnings;
+
+unless($ARGV[0]){
+  die "Need input file";
+}
+
+my $filename = $ARGV[0];
+open FILE,"< $filename" or die " Can't open input file: $!";
+# read lines from file
+while (my $line = <FILE>){
+  chomp $line;
+  # test cases
+  if(-e $line){
+    print "E\t";
+  }else{
+    print "-\t";
+  }
+  if(-T $line){
+    print "T\t";
+  }else{
+    print "-\t";
+  }
+  if(-r $line){
+    print "R\t";
+  }else{
+    print "-\t";
+  }
+  if(-w $line){
+    print "W\t";
+  }else{
+    print "-\t";
+  }
+  if(-x $line){
+    print "X\t";
+  }else{
+    print "-\t";
+  }
+  print "$line\n";
+
+}
+close FILE;
+
+5.
+use strict;
+use warnings;
+
+#subroute for decrypt a character
+sub decrypt{
+  my ($chr) = @_;
+  if (ord($chr) >=97 && ord($chr) <=118){
+    return chr(ord($chr)+4);
+  }elsif(ord($chr) >=119 && ord($chr) <=122){
+    return chr(ord($chr)+4-26);
+  }else{
+    return $chr;
+  }
+}
+
+#subroute for encrypt a character
+sub encrypt{
+  my ($chr) = @_;
+  if (ord($chr) >=97 && ord($chr) <=100){
+    return chr(ord($chr)-4+26);
+  }elsif(ord($chr) >=101 && ord($chr) <=122){
+    return chr(ord($chr)-4);
+  }else{
+    return $chr;
+  }
+}
+
+# open INPUT,"< $ARGV[0]" or die " Can't open file: $!\n";
+my $string = "pda lupdkj lnkcnwiiejc hwjcqwca swo ejrajpaz xu cqezk rwj nkooqi, w zqpyd ykilqpan lnkcnwiian, wxkqp 25 uawno wck. rwj nkooqi zabejaz deo ckwho bkn lupdkj wo bkhhkso: wj awou wjz ejpqepera hwjcqwca fqop wo lksanbqh wo iwfkn ykilapepkno; klaj okqnya, ok wjukja ywj ykjpnexqpa pk epo zarahkliajp; ykza pdwp eo wo qjzanopwjzwxha wo lhwej ajcheod; oqepwxehepu bkn aranuzwu pwogo, whhksejc bkn odknp zarahkliajp peiao";
+# close INPUT;
+
+print "The original string:\n$string";
+#split in to array for mapping
+my @split = split("",$string);
+my $encrypted = join("",map{decrypt($_)} @split);
+
+print "\n\nafter mapping:\n$encrypted";
+
+@split = split("",$encrypted);
+my $decrypted = join("",map{encrypt($_)} @split);
+print "\n\nafter enctyption:\n$decrypted\n";
+
+6.
+use strict;
+use warnings;
+#open input and out put files
+open INPUT, "< adm-kng.com.archive.html" or die "Can't open input file: $!";
+open OUTPUT,"> images.html" or die " Can't open images.html: $!";
+# print the skeleton html to ouput file
+print OUTPUT "<html>\n<title>337 A2 HTML images</title>\n<body>";
+print "ALL .jpg URLs:\n";
+# regex matching
+while (my $line = <INPUT>){
+  # all url
+  if($line =~ /data-imageurl="(.+?)">/){
+    my $url = $1;
+    print "$url\n";
+    # all url with 3x.media or 4x.media
+    if($url =~ /http:\/\/[34]\d*\.media/){
+      print OUTPUT "<img src=\"$url\">\n";
+    }
+  }
+}
+print OUTPUT "</body>\n</html>";
+print "DONE, see image.html\n";
+close INPUT;
+close OUTPUT;
+
+7.
+
+(a):
+Path variable stores the directories of executable programs
+
+(b):
+use strict;
+use warnings;
+
+
+print "1.prints the number of environment variables that are in %ENV:\n";
+my @environment_vairable = keys %ENV;
+my $number_of_environment_variable = @environment_vairable;
+print "$number_of_environment_variable\n";
+
+print "\n2.prints the content of the PATH variable in %ENV:\n";
+print "$ENV{PATH}\n";
+
+print "\n3.prints the number of directories in the PATH variable:\n";
+my $PATH_String = $ENV{PATH};
+my @PATH_ARRAY = split(":",$PATH_String);
+my $PATH_SIZE = @PATH_ARRAY;
+print "$PATH_SIZE\n";
+
+print "\n4.sorts the directories in the PATH variable, and prints them one directory per line:\n";
+
+my @PATH_SORT = sort(@PATH_ARRAY);
+foreach my $DIRECTORY (@PATH_SORT){
+  print "$DIRECTORY\n";
+}
+
+#use chmod u+x on while.pl
+print "\n5.adds the current directory to the PATH, and runs a Perl script in the current directory from within your program using system(“while.pl”);:\n";
+
+my $current_directory = $ENV{PWD};
+$current_directory .= "/";
+print $current_directory;
+$PATH_String .= ":";
+$PATH_String .= $current_directory;
+$ENV{PATH} = $PATH_String;
+system("while.pl");
+
+8.
+
+use strict;
+use warnings;
+
+my $hash_ref = {};
+open INPUT,"< $ARGV[0]" or die "Can't open input file :$!";
+
+# while (<INPUT>){
+#
+#   foreach my $word(split){
+#     my $found = 0;
+#     my @hash_keys = keys $hash_ref;
+#     foreach my $key (@hash_keys){
+#       if ($word eq $key){
+#         $$hash_ref{$word} .="=";
+#         $found = 1;
+#       }
+#     }
+#     if ($found == 0){
+#       $$hash_ref{$word} ="=";
+#     }
+#
+#   }
+# }
+#
+# while(my($key,$value) = each $hash_ref){
+#   print "$key:\t$value\n";
+# }
+
+while (<INPUT>){
+
+  foreach my $word(split){
+        $$hash_ref{$word} .="=";
+}
+
+while(my($key,$value) = each $hash_ref){
+  print "$key:\t$value\n";
+}
+}
+
+close INPUT;
+
+
+9.
+use strict;
+use warnings;
+
+my $hash_level1 = {};
+my @word_array;
+
+
+# level - 1 Hash key :    each words in array : W
+# level - 1 Hash value : level - 2 hash
+#
+# level - 2 Hash key : every word after W
+# level - 2 Hash Value : time of appearance in form of '='
+
+# get all text by word and put it in to array and create the top level hash in level- 1 hash
+open INPUT,"< $ARGV[0]" or die "Can't open input file :$!";
+while (<INPUT>){
+  foreach my $word(split){
+    push @word_array,$word;
+    $$hash_level1{$word}="";
+  }
+}
+close INPUT;
+
+# create level- 2 hash for each key in level-1
+foreach my $level_1_key (keys $hash_level1){
+
+  #create a level - hash
+  my $hash_level2 = {};
+  my @temp = @word_array;
+  for(my $count = 0; @temp; $count ++){
+    my $word = $temp[0];
+    if ($word eq $level_1_key){
+      shift @temp;
+      if (@temp){
+        my $following_word = $temp[0];
+        $$hash_level2{$following_word} .= "=";
+      }
+    }
+    else{
+      shift @temp;
+    }
+  }
+  $$hash_level1{$level_1_key} = $hash_level2;
+}
+
+
+print "Enter a word: ";
+my $word = <STDIN>;
+chomp($word);
+if ($hash_level1->{$word}){
+  while(my($key,$value) = each $hash_level1->{$word}){
+    print "$key:\t$value\n";
+  }
+}else{
+  print "threre's no  $word in the input file\n";
+}

@@ -1,0 +1,19 @@
+echo
+echo "Today is `date`."
+echo "Content of my home directory sorted"
+echo "--------------------------------------------------------------"
+cd ~
+ls -latr
+echo
+
+
+
+echo -n "There are total "  
+echo -n `find ~ | wc -l`
+echo  -n " entries, with "
+echo -n `find ~ -type d| wc -l`
+echo  -n " directories and  "
+echo -n `find ~ -type f| wc -l`
+echo " files."
+echo "done"
+echo

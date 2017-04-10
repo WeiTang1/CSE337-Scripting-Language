@@ -1,0 +1,269 @@
+CSE337
+Assignment1 
+Wei Tang
+108979235
+
+Q1:
+# read input from user
+inputfileName = raw_input ("Please Enter File Name:")
+#create the output file name
+outputfileName = inputfileName.replace('.html','_ouput.html')
+# open and read the file as a whole string
+inputFile = file(inputfileName)
+input = inputFile.read()
+inputFile.close()
+# delete all the span tags
+output = input.replace('<span>','').replace('</span>','')
+# open file and write
+outputFile = file(outputfileName,'w')
+outputFile.write(output)
+outputFile.close()
+print "output file created :",outputfileName
+
+Q2:
+inputFileName = raw_input("please enter a encrypted file name: ")
+inputfile = open(inputFileName)
+
+input = inputfile.read()
+inputfile.close()
+chars = list(input)
+
+for i in range(0,len(chars)):
+    if 'a' <=chars[i] <='v':
+        chars[i] = chr(ord(chars[i]) + 4)
+    elif 'w' <= chars[i] <='z':
+        chars[i] = chr(ord(chars[i]) + 4 - 26)
+
+output = ''.join(chars)
+print(output)
+
+Q3:
+# i: i predict c = [[1,2],3]
+# ii: the result doesn't match my prediction.
+# explaination: because c=b[:] is not complete true copy, it still contains a's reference to [1,2]
+#               However, in c it still have a as a reference to [1,2], so when a[0]=7, c also change.
+#               when b[1] = 8, it only affect b, because c doesn't refer to b.
+#iii:
+print "i, ii, iii answers in comment"
+print 'iii:'
+import copy
+a=[1,2]
+b=[a,3]
+c=copy.deepcopy(b)
+print "after make true copy of C"
+print "change a[0]=7 and b[1]=8"
+a[0]=7
+b[1]=8
+print "a = ",a, "b = ",b
+print "after change were made"
+print 'c is',c
+# answer c is [[1,2],3]
+
+print 'iv:'
+level1 = [1,2,3]
+level2 = [level1,4]
+level3 = [[level1,level2],4]
+print 'level 1:',level1
+print 'level 2:',level2
+print 'level 3:',level3
+truecopy = copy.deepcopy(level3)
+print 'truecopy',truecopy
+level1[0]=9
+level2[1]=8
+print 'after change level 1 and level 2:'
+print 'level 3:', level3
+print 'truecopy:',truecopy
+
+Q4:
+i:
+
+(a):
+if n = 2 and r = 1
+line will be executed:
+9  if n>r: break
+it will break the for loop
+so it will not execute the else statement:
+else:
+  print "Wow, you are lucky\n"
+and nothing will be printed because n < 2 doesn't hold true
+
+(b):
+if n = 1 and r = 1
+line will be executed:
+8  if n == r : continue
+it will skip the rest of the for loop and
+jump right to the next conditional test case of n = 2
+
+
+
+(c):
+if n = 2 and r = 2
+8  if n == r : continue
+this line will executed
+continue will skip the rest of the for loop and
+jump right back to the conditional test case
+however, the for loop literation already end when n = 2
+so the for loop will end without break
+so it will execute the else statement
+else:
+  print "Wow, you are lucky\n"
+
+and print "Wow, you are lucky\n"
+
+
+(d):
+if n = 0 and r = 2:
+10  print "x"
+will be executed because n==r and n>r will be false
+so no continue or break in for loop.
+after that it will get to the next iteration
+
+ii:
+the program will execute else statement
+when the for loop ends without break
+
+Q5:
+# compare function
+def compareIns(x,y):
+    if x.lower() < y.lower():return -1
+    if x.lower() == y.lower():return 0
+    return 1
+
+data = []
+for i in range(4):
+    print "Please enter string No." , i+1, ':'
+    string= raw_input()
+    data.append(string)
+
+print "before sort",data
+data.sort(compareIns)
+print "after sort",data
+
+Q6:
+import sys
+# readfile fun for read and pharse line to dictionary
+def readfile(filename):
+    file = open(filename)
+    line = file.readline()
+    data = []
+    while line:
+        # line = line.replace('\n','')
+        dic={}
+        linelist = line.split('\t')
+        dic["lastname"] = linelist[0]
+        dic["firstname"] = linelist[1]
+        dic["email"] = linelist[2]
+        dic["ID"] = linelist[3]
+        dic["tel"] = linelist[4]
+        data.append(dic)
+        line = file.readline()
+    file.close
+    return data
+# help function for convert a dictionary to string
+def toString(element):
+    strlist = []
+    strlist.append(element["lastname"])
+    strlist.append(element["firstname"])
+    strlist.append(element["email"])
+    strlist.append(element["ID"])
+    strlist.append(element["tel"])
+    return '\t'.join(strlist)
+# data1 will contain the record from first file
+# data2 will contain the record from second file
+data1,data2=[],[]
+data1 = readfile(sys.argv[1])
+data2 = readfile(sys.argv[2])
+old = open("old.txt",'w')
+current = open ('current.txt','w')
+new = open('new.txt','w')
+for element1 in data1:
+    #each element in old file
+    for element2 in data2:
+        #each element in new file
+        if element1['lastname'] == element2['lastname'] and element1['firstname'] == element2['firstname']:
+            # element1 in both file write element 1 to current file.
+            current.write(toString(element1))
+            # delete the entry from data2 so that data2 only contains records that only in new file.
+            data2.remove(element2)
+            break;
+    # else statement wil execute if the for loop continue without break,
+    # that means element1 is not in element 2 so write to old file
+    else:
+        old.write(toString(element1))
+
+#write to new file.
+for element2 in data2:
+    new.write(toString(element2))
+
+old.close()
+new.close()
+current.close()
+print "old.txt , new.txt , current.txt created "
+
+Q7:
+def comparenote(x,y):
+    if x[1]<y[1] : return 1
+    if x[1]==y[1]: return 0
+    return -1
+
+fileName = raw_input("please enter filename: ")
+
+f = open(fileName)
+line = f.readline()
+data=[]
+while line:
+    line = line.strip()
+    urlindex = line.find('href=')
+    if urlindex != -1:
+        url = line[urlindex:].split('"')[1]
+    dataindex = line.find('data-notes=')
+    if dataindex != -1:
+        note = line[dataindex:].split('"')[1]
+        entry = [url,eval(note)]
+        data.append(entry)
+    line = f.readline()
+
+data.sort(comparenote)
+i=0
+print "top five notes:"
+for i in range(0,5):
+    print "notes: ", data[i][1]
+
+f = open("simple.html",'w')
+f.write("<html><body>\n")
+for i in range(0,5):
+    if i !=4:
+        s = '#'+str(i+1)+": <a href="+data[i][0]+'>'+str(data[i][1])+' notes</a><br><br>\n'
+    else:
+        s = "#"+str(i+1)+": <a href="+data[i][0]+'>'+str(data[i][1])+' notes</a>\n'
+    f.write(s)
+
+f.write("</body></html>")
+
+f.close()
+
+print "HTML page generated : simple.html"
+
+Q8:
+def listDiff(x,y):
+    z = []
+    for element1 in x:
+        for element2 in y:
+            if element1 == element2:
+                # element 1 is in second list
+                break
+        # if no break happened that means element1 is not in second list so add to z
+        else:
+            z.append(element1)
+    return z
+# union of the two list is just the second list + the difference of the two list
+def listUnion(x,y):
+    return y+listDiff(x,y)
+
+
+list1 = ['a','b','c','d','e']
+list2 = ['d','e','f','g','h']
+print "list1 ",list1
+print "list2 ",list2
+print "differnece: ", listDiff(list1,list2)
+print "union :", listUnion(list1,list2)

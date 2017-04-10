@@ -1,0 +1,262 @@
+Wei Tang
+108979235
+CE337
+Assignment 3
+
+
+1. Note: highlisght parts are indicated within <>
+(a):
+Pattern: /ord/
+Ordinary : no match
+order : <ord>er
+afford : aff<ord>
+cordford : c<ord>ford
+'ORD airport': no match
+
+(b):
+pattern: /.p/
+p: no match
+a.pl: a<.p>l
+<p>: <<p>>  (matching part is <p)
+developing: devel<op>ing
+ppp:<pp>p
+
+(c):
+pattern: /fo.*/
+foo: <foo>
+foobar:<foobar>
+barfoo: bar<foo>
+foobarfoo: <foobarfoo>
+portfollio: port<follio>
+
+(d):
+pattern: /\Bwork\b/
+work: no match
+back2work: back2<work>
+to_do_work: to_do_<work>
+networking: no match
+"coursework list': "course<work> list'
+
+(e):
+how to use my program
+
+python q1e.py
+
+regular expression format : enter without "/" boundries
+example:
+
+/expression/
+
+enter regexp:  expression 
+
+2:
+
+(a) /[\w-]{5,10}/ (2pts):
+
+The expression would match anything contains 5 to 10 consecutive combination of word character or literal "-"
+
+Example:   helloword:match:<helloword>
+		   1234 1234567:match:1234 <1234567>
+
+(b) /^[+-]?\d+\.?\d*$/ (3pts):
+
+The expression matches string start with one or zero appearance of literal "+" or literal "-" followed by one or more digit followed by one or zero appearance of literal "." followed by any number of digit followed by end of string
+
+example : 	123456:match:<123456>
+			1.23456:match:<1.23456>
+			.1234:no match
+
+(c) s/<(\/?)b>/<\1strong>/ig (3pts)
+
+The expression will substitute string part that start with literal "<" followed by 0 or 1 appearance of literal "/" followed by a "b" and followed by literal > by literal "<" followed by capture group 1 followed by "strong" and literal ">", it will sustitute globally and case insensitively  
+
+example "<b>" --> "<strong>"
+		"</B>hello" --> "</strong>hello"
+
+
+(d) /<(.*?)>.*?<\/\1>/ (3pts)
+
+The expression would match string that contains 
+literal "<" followed by any character as few as possible and followed by ">" followed by any character as few as possible followed by "<" followed by "</" followed by capture group 1 followed by ">"
+
+in another word it matchs one open and close html tag because *? is non-greedy
+
+example :1.	"<string>anything</sting>" match the whole string
+		 2.	won't match "<string>hello</str>"
+		 3. "<s>abda</s>fasdf</s><s>a</s>"
+		 	would only match "<s>abda</s>"
+
+
+(e) /<(.*?)>.*<\/\1>/ (2pts):
+
+The expression matches "<" followed by any character as few as possible followed by ">" followed by anynumber of any string followed by "</" followed by the capture group 1 (which is the same text within the first "<>"") 
+
+in another word it matchs the biggest open and close html tag
+
+
+example :1.	"<string>anything</sting>"
+		 2.	won't match "<string>hello</str>"
+		 3. "<s>abda</s>fasdf</s><s>a</s>"
+		 	would match the whole string
+
+
+(f) /\s+[a-z\d_-]+@[\da-z.]+\.[a-z]{2,6}\s+/ (3pts)
+
+
+The expression would match any string that contains 
+one or more white space followed by
+one or more accurance of character range from "a" to "z" or a digit or literal underscore "_" or literal "-" followed by
+literal "@" followed by 
+one or more of character range from "a" to "z" or a digit or a literal "." followed by 
+a literal "." followed by
+2 to 6 repetition of character range from "a" to "z"
+
+
+example " test@test.com " match the whole string 
+		"  337@337.com  " match the whole string
+
+
+3.
+(a):/^[CcIi][Ss][eE][1-9]\d{2}$/
+
+terminal output :
+
+Weis-MacBook-Pro:a3-source weitang$ perl q1e.pl 
+Please Enter pattern:
+[CcIi][Ss][eE][1-9]\d{2}
+Please Enter words:
+CSE123
+CSE123:<CSE123>
+ise123
+ise123:<ise123>
+ise012
+ise012:no match
+
+
+(b):/[^\w.\/-]+/
+
+terminal output:
+
+Weis-MBP:a3-source weitang$ perl q1e.pl 
+Please Enter pattern:
+[^\w.\/-]+
+please Enter words:
+myroot/myfile/file.txt            
+myroot/myfile/file.txt:no match
+myroot/myf)ile/file.txt
+myroot/myf)ile/file.txt:match:myroot/myf<)>ile/file.txt
+
+another expresson : /[^a-zA-Z0-9_.\/-]+/
+
+terminal output:
+
+Weis-MBP:a3-source weitang$ perl q1e.pl 
+Please Enter pattern:
+[^a-zA-Z0-9_.\/-]+
+please Enter words:
+myroot/mydirectory+/myfile.txt
+myroot/mydirectory+/myfile.txt:match:myroot/mydirectory<+>/myfile.txt
+myroot/mydirectory/myfile.txt
+myroot/mydirectory/myfile.txt:no match
+
+
+(c):
+expresson : /\b(\w+)\b.*\b\1\b/
+terminal output:
+
+Weis-MacBook-Pro:a3-source weitang$ perl q1e.pl 
+Please Enter pattern:
+\b(\w+)\b.*\b\1\b
+Please Enter words:
+Hello World Helo
+Please Enter words:
+Hello World Helo:no match
+Hello World Helo World
+Please Enter words:
+Hello World Helo World:match:Hello <World Helo World>
+
+
+
+(e):
+expression : /^[^a]*?a[^ba]*b+[^a]*a([^ba]*b+[^a]*a)*[^a]*$/
+
+explaination : find first a the find then find first b then find next a repeat the pattern 
+
+terminal output:
+
+Weis-MBP:a3-source weitang$ perl q1e.pl 
+Please Enter pattern:
+^[^a]*?a[^ba]*b+[^a]*a([^ba]*b+[^a]*a)*[^a]*$
+please Enter words:
+aba 
+aba:match:<aba>
+ababa
+ababa:match:<ababa>
+abaa
+abaa:no match
+abaca
+abaca:no match
+
+
+
+4.
+(a):
+use strict;
+use warnings;
+
+open INPUT,"< $ARGV[0]" or die "Can't open input file :$!";
+
+my $ninteen = 19;
+my $twenty = 20;
+
+
+while (my $line = <INPUT>){
+	$line =~ s/\b(\d\d\/\d\d\/)([5-9]\d)\b/$1$ninteen$2/g;
+	$line =~ s/\b(\d\d\/\d\d\/)([^5-9]\d)\b/$1$twenty$2/g;
+	print $line;
+}
+print "\n";
+close INPUT;
+
+
+close INPUT;
+
+(b):
+use strict;
+use warnings;
+
+
+unless($ARGV[0] && $ARGV[1] && $ARGV[2] && $ARGV[3] && $ARGV[4]){
+  die "Need complete command line \n";
+}
+
+
+my $length = $ARGV[0]; #length
+my $m = $ARGV[1]-1;	# position of the word -1 for index
+my $c = $ARGV[2];	# denotes an English letter
+my $n = $ARGV[3]-1;	#another position -1 for index
+my $r = $ARGV[4];	# another char
+
+
+open INPUT,"< /usr/share/dict/words" or die "Can't open input file :$!";
+
+while (my $line = <INPUT>){
+
+	if ($line =~ /^\w{$length}$/){
+		if($line =~/^\w{$m}$c/){
+			if($line =~/^\w{$n}$r/){
+				print $line;
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+

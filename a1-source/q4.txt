@@ -1,0 +1,46 @@
+i:
+
+(a):
+if n = 2 and r = 1
+line will be executed:
+9  if n>r: break
+it will break the for loop
+so it will not execute the else statement:
+else:
+  print "Wow, you are lucky\n"
+and nothing will be printed because n < 2 doesn't hold true
+
+(b):
+if n = 1 and r = 1
+line will be executed:
+8  if n == r : continue
+it will skip the rest of the for loop and
+jump right to the next conditional test case of n = 2
+
+
+
+(c):
+if n = 2 and r = 2
+8  if n == r : continue
+this line will executed
+continue will skip the rest of the for loop and
+jump right back to the conditional test case
+however, the for loop literation already end when n = 2
+so the for loop will end without break
+so it will execute the else statement
+else:
+  print "Wow, you are lucky\n"
+
+and print "Wow, you are lucky\n"
+
+
+(d):
+if n = 0 and r = 2:
+10  print "x"
+will be executed because n==r and n>r will be false
+so no continue or break in for loop.
+after that it will get to the next iteration
+
+ii:
+the program will execute else statement
+when the for loop ends without break
